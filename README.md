@@ -49,3 +49,37 @@ shutdown(server, opts) => function(ctx, next)
 
 - Original credits to [Paul Serby](https://github.com/serby/) for [`express-graceful-shutdown`](https://github.com/serby/express-graceful-shutdown).
 - Any questions or suggestions please [open an issue](https://github.com/jdrydn/koa-graceful-shutdown/issues).
+- Credits for multiple signal shutdown to [Sebastian Hildebrandt](https://github.com/sebhildebrandt) taken from [`http-graceful-shutdown`](https://github.com/sebhildebrandt/http-graceful-shutdown).
+
+## Examples
+
+### Before shutdown
+
+```js
+const beforeShutdown = (exitCallback) => {
+  // DO SOMETHING...
+  exitCallback();
+};
+
+app.use(shutdown(server, {
+  beforeShutdown,
+}));
+```
+
+### Custom response body
+
+```js
+app.use(shutdown(server, {
+  responseType: 'application/json',
+  responseBody: JSON.stringify({ error: 'some error' }),
+}));
+```
+
+### Custom process kill signals
+
+```js
+app.use(shutdown(server, {
+  // It will exit on any of these signals
+  signals: 'SIGINT SIGTERM',
+}));
+```
